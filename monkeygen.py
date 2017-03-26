@@ -6,10 +6,10 @@ import subprocess
 import datetime
 
 TEST_SUITE_DIR = "testsuites"
-AUT_PACKAGE_NAME = "org.tomdroid"
+AUT_PACKAGE_NAME = "ivl.android.moneybalance"
 SDK_PATH = "/home/davidadamojr/Android/Sdk" 
 INSTRUMENTATION_CLASS = "com.davidadamojr.tester.EmmaInstrumentation"
-DEVICE_COV_PATH = "/mnt/sdcard/org.tomdroid/coverage.ec"
+DEVICE_COV_PATH = "/mnt/sdcard/" + AUT_PACKAGE_NAME + "/coverage.ec"
 
 def print_usage():
     print "Usage: python monkeygen.py generate [no_of_testcases] [no_of_events]\n python monkeygen.py replay [path_to_suite]"
@@ -56,8 +56,8 @@ def generate_testcases(paths):
             monkey_options = "-v " + str(no_of_events) + \
                             " -s " + str(rand_num) + " --throttle 10000"
             """
-            monkey_options = "-p " + AUT_PACKAGE_NAME + " -v " + str(no_of_events) + \
-                            " -s " + str(rand_num) + " --throttle 10000"   
+            monkey_options = "-p " + AUT_PACKAGE_NAME + \
+                            " -s " + str(rand_num) + " --throttle 500 -v " + str(no_of_events)  
             monkey_command = adb_path + " shell monkey " + monkey_options
             subprocess.call(monkey_command, shell=True)     # waits for command to complete
             suite_file.write(str(rand_num) + os.linesep)
@@ -70,6 +70,10 @@ def generate_testcases(paths):
             renamed_local_cov_path = os.path.join(cov_path, cov_filename)
             file_pull_cmd = adb_path + " pull " + DEVICE_COV_PATH + " " + cov_path
             subprocess.call(file_pull_cmd, shell=True)
+            
+            # remove coverage file from device
+            # file_remove_cmd = adb_path + " shell rm " + DEVICE_COV_PATH
+            # subprocess.call(file_remove_cmd, shell=True)
     
             rename_cmd = "mv " + os.path.join(cov_path, "coverage.ec") + " " + renamed_local_cov_path
             subprocess.call(rename_cmd, shell=True) 
