@@ -15,6 +15,7 @@ if START_COUNT < 0:
 else:
     test_suites_generated = START_COUNT - 1
 
+failed = False
 while test_suites_generated < (START_COUNT - 1) + num_test_suites:
     
     subprocess.call(config.MONKEY_CMD, shell=True)
@@ -55,6 +56,9 @@ while test_suites_generated < (START_COUNT - 1) + num_test_suites:
         print "An error occurred. Test suite generation was not completed successfully."
         break
 
+    test_suites_generated = test_suites_generated + 1
+    print "==========================================="
+    print "Test suite {} generated successfully.".format(str(test_suites_generated))
+
 if not failed:
     print "Successfully generated {} test suites.".format(str(test_suites_generated))
-    
