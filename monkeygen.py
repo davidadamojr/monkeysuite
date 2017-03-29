@@ -90,7 +90,7 @@ def generate_testcases(paths, test_gen_time, num_of_events):
             print "Process id is {}".format(process_id)
     
             monkey_options = "-p " + AUT_PACKAGE_NAME + " -v " + " -s " + str(rand_num) + \
-                             " --throttle 2000 --ignore-crashes --ignore-timeouts " + str(num_of_events)
+                             " --ignore-crashes --ignore-timeouts " + str(num_of_events)
             monkey_cmd = adb_path + " shell monkey " + monkey_options
             subprocess.call(monkey_cmd, shell=True)     # waits for command to complete
             suite_file.write(str(rand_num) + os.linesep)
