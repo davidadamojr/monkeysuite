@@ -5,8 +5,8 @@ import os
 import subprocess
 
 TEST_SUITE_DIR = "testsuites"
-APK_FILE = "org.tomdroid_072_aligned.apk"
-AUT_PACKAGE_NAME = "org.tomdroid"
+APK_FILE = "com.notriddle.budget_40_aligned.apk"
+AUT_PACKAGE_NAME = "com.notriddle.budget"
 SDK_PATH = os.path.join(os.path.expanduser('~'), "Android", "Sdk") 
 INSTRUMENTATION_CLASS = "com.davidadamojr.tester.EmmaInstrumentation"
 DEVICE_COV_PATH = "/mnt/sdcard/" + AUT_PACKAGE_NAME + "/coverage.ec"
@@ -89,7 +89,7 @@ def generate_testcases(paths, test_gen_time, num_of_events):
             process_id = get_process_id().strip()
             print "Process id is {}".format(process_id)
     
-            monkey_options = "-p " + AUT_PACKAGE_NAME + " -v " + " -s " + str(rand_num) + \
+            monkey_options = "-p " + AUT_PACKAGE_NAME + " -s " + str(rand_num) + \
                              " --ignore-crashes --ignore-timeouts " + str(num_of_events)
             monkey_cmd = adb_path + " shell monkey " + monkey_options
             subprocess.call(monkey_cmd, shell=True)     # waits for command to complete
