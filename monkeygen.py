@@ -5,8 +5,8 @@ import os
 import subprocess
 
 TEST_SUITE_DIR = "testsuites"
-APK_FILE = "com.notriddle.budget_40_aligned.apk"
-AUT_PACKAGE_NAME = "com.notriddle.budget"
+APK_FILE = "ivl.android.moneybalance_1_aligned.apk"
+AUT_PACKAGE_NAME = "ivl.android.moneybalance"
 SDK_PATH = os.path.join(os.path.expanduser('~'), "Android", "Sdk") 
 INSTRUMENTATION_CLASS = "com.davidadamojr.tester.EmmaInstrumentation"
 DEVICE_COV_PATH = "/mnt/sdcard/" + AUT_PACKAGE_NAME + "/coverage.ec"
