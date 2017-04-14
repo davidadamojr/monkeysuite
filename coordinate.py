@@ -1,9 +1,29 @@
 import sys
 import os
 import tarfile
+import time
 import subprocess
 import shutil
 from dropbox_config import config
+
+def kill_adb():
+    kill_adb_cmd = "adb kill-server"
+    subprocess.call(kill_adb_cmd, shell=True)
+
+def start_emulator():
+    kill_adb()
+    start_emulator_cmd = "{} --vm-name {}".format(config.GENYMOTION_PATH, config.VM_NAME)
+    print start_emulator_cmd
+    subprocess.Popen(start_emulator_cmd, shell=True)
+    print "Starting emulator..."
+    time.sleep(30)
+
+def stop_emulator():
+    stop_emulator_cmd = "ps -a | grep 'player' | awk '{print $1}' | xargs kill"
+    subprocess.call(stop_emulator_cmd, shell=True)
+    print "Closing emulator..."
+    time.sleep(10)
+    kill_adb()
 
 START_COUNT = int(sys.argv[2])
 
@@ -17,7 +37,9 @@ else:
 
 failed = False
 while test_suites_generated < (START_COUNT - 1) + num_test_suites:
-    
+
+    start_emulator()
+
     subprocess.call(config.MONKEY_CMD, shell=True)
     test_suite_dir = os.path.join("testsuites", config.AUT_PACKAGE)
     test_suite_file_names = os.listdir(test_suite_dir)
@@ -59,6 +81,8 @@ while test_suites_generated < (START_COUNT - 1) + num_test_suites:
     test_suites_generated = test_suites_generated + 1
     print "==========================================="
     print "Test suite {} generated successfully.".format(str(test_suites_generated))
+
+    stop_emulator()
 
 if not failed:
     print "Successfully generated {} test suites.".format(str(test_suites_generated))
